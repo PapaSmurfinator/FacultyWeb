@@ -1,0 +1,103 @@
+﻿@using FacultyWeb.ViewModels
+@model ContentViewModel
+@{
+    ViewData["Title"] = "Content";
+}
+
+
+<header class="menu-bar">
+
+    <div class="container-fluid" style="padding-top:25px;">
+        <div class="row">
+            <div class="col-xl-auto col-lg-auto col-md-auto col-sm-auto" style="margin-left:10px;">
+                @foreach (var p in Model.Faculties)
+                {
+                    @if (p.Image != null)
+                    {
+                        <a asp-action="Content" asp-controller="Home" asp-route-fId="@p.Id"><img style='width:112px; height:111px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(p.Image))" /></a>
+                    }
+                }
+            </div>
+            <div class="col-xl-auto col-lg-auto col-md-auto col-sm-auto">
+                <h2 style="color: #A41F09;  font-size: 24px;">
+                    Дагестанский государственный университет
+                </h2>
+                @if (ViewBag.FacultyName != default(string))
+                {
+                    <h2 style="color: #EBA708; font-size: 24px ">@Html.Raw(ViewBag.FacultyName)</h2>
+                }
+            </div>
+            <div class="col-xl-auto col-lg-auto col-md-auto col-sm-auto">
+                <nav class="navbar navbar-expand-md navbar-light">
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                            @foreach (var header in Model.Headers)
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" asp-action="Content" asp-controller="Home" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        @header.Name
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        @foreach (var subheader in Model.SubHeaders)
+                                        {
+                                            @if (subheader.HeaderId == header.Id)
+                                            {
+                                                <a class="dropdown-item" asp-action="Content" asp-controller="Home" asp-route-subheaderD="@subheader.Name" asp-route-fId="@subheader.Header.FacultyId" asp-route-hId="@subheader.Header.Id">
+                                                    @subheader.Name
+                                                </a>
+                                            }
+                                        }
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div><br /><br />
+</header>
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <aside class="col-xl-auto col-lg-auto col-md-auto col-sm-auto">
+                @foreach (var sidebar in Model.Sidebars)
+                {<div class="row">
+                        <div class="btn-group dropright">
+                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @sidebar.Name
+                            </button>
+                            <div class="dropdown-menu">
+                                @foreach (var subsidebar in Model.SubSidebars)
+                                {
+                                    @if (subsidebar.SidebarId == sidebar.Id)
+                                    {<a class="dropdown-item" asp-action="Content" asp-controller="Home" asp-route-subsidebarD="@subsidebar.Name" asp-route-fId="@subsidebar.Sidebar.FacultyId">@subsidebar.Name</a>
+                                }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </aside>
+            <main class="col-md-8 col-lg-9">
+                @if (ViewBag.Content != default(string))
+                {
+                    @Html.Raw(ViewBag.Content)
+                }
+            </main>
+        </div>
+    </div>
+</section>
+<style>
+
+    nav.navbar .dropdown:hover > .dropdown-menu {
+        display: block;
+        margin-top: 0;
+    }
+</style>

@@ -1,0 +1,40 @@
+﻿@model FacultyWeb.Models.SubHeader
+
+@{
+    ViewData["Title"] = "CreateSHeader";
+}
+<script src="~/ckeditor 4/ckeditor.js"></script>
+<script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var editor = CKEDITOR.replace('Content');
+        });
+</script>
+<h1>CreateSHeader</h1>
+
+<h4>SubHeader</h4>
+<hr />
+<div class="container-fluid">
+    <form asp-action="CreateSHeader">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Content" class="control-label"></label>
+            <textarea id="Content" name="Content"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="hidden" value="@ViewBag.HeaderId" name="HeaderId" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-action="ListFaculty" asp-controller="Faculty">Back to List</a>
+</div>

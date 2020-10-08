@@ -1,0 +1,74 @@
+﻿@using FacultyWeb.ViewModels
+@model AdminViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+@if (User.Identity.IsAuthenticated)
+{
+    <header>
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <a class="navbar-brand" asp-action="Index"><img src="~/image/logodgu.jpg" width="100px" /></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-action="Index">Главная <span class="sr-only">(current)</span></a>
+                    </li>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index" asp-controller="Users">Пользователи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index" asp-controller="Roles">Роли</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" asp-action="ListFaculty" asp-controller="Faculty" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Факультеты
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @foreach (var faculty in Model.Faculties)
+                                {
+                                    <a class="dropdown-item" asp-action="FacultyComponents" asp-controller="Faculty" asp-route-Id="@faculty.Id">@faculty.Name</a>
+                                }
+                            </div>
+                            <div class="nav-item">
+                                <a class="nav-link" asp-action="ListFaculty" asp-controller="Faculty">Список факультетов</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <form class="form-inline my-2 my-lg-0" method="post" asp-controller="Account" asp-action="Logout">
+                    @if (User.IsInRole("admin"))
+                    {
+                        <p>Администратор: @User.Identity.Name   </p>
+                    }
+                    @if (User.IsInRole("moderator"))
+                    {
+                        <p>Модератор: @User.Identity.Name</p>
+                    }
+                    <input type="submit" value="Выход" />
+                </form>
+            </div>
+        </nav>
+    </header>
+    @await Html.PartialAsync("/Views/Faculty/ListFaculty/ListFaculty.cshtml")
+
+
+}
+else
+{
+    <div class="container text-center h-100" style="height:100%;margin-top:250px;">
+        <div>
+            <a class="btn btn-warning btn-lg" asp-controller="Account" asp-action="Login">Вход</a>
+        </div>
+        <div>
+            <a class="btn btn-light btn-lg" asp-controller="Account" asp-action="Register">Регистрация</a>
+        </div>
+    </div>
+}

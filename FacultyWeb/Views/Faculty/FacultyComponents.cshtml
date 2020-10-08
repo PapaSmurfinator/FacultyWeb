@@ -1,0 +1,161 @@
+﻿@using FacultyWeb.ViewModels
+@model AdminViewModel
+@{
+    ViewData["Title"] = "FacultyComponents";
+}
+
+
+<h1>
+    Компоненты @foreach (var p in Model.Faculties)
+    {
+        @p.Name
+    }
+</h1>
+@if (User.IsInRole("admin"))
+{
+    <div>
+        <a class="text-decoration-none" asp-action="ListFaculty" asp-controller="Faculty">Список факультетов</a>
+    </div>
+}
+<div>
+    <a class="text-decoration-none" asp-action="Index" asp-controller="Account">Личный кабинет</a>
+</div>
+<br />
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Header</th>
+
+            <th>
+                @if (User.IsInRole("admin"))
+                {
+                    <a class="text-decoration-none" asp-action="CreateHeader" asp-controller="Header" asp-route-FacultyId="@ViewBag.FacultyId">Create New Header</a>
+                }
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+
+
+    @foreach (var header in Model.Headers)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => header.Name)
+            </td>
+            <td>
+                <table class="table table-bordered">
+
+                    <tr>
+                        <th>Subheader</th>
+
+                        <th>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <a class="text-decoration-none" asp-action="CreateSHeader" asp-controller="SubHeader" asp-route-HeaderId="@header.Id">Create New Subheader</a>
+                            }
+                        </th>
+
+                    </tr>
+
+
+                    @foreach (var subheader in Model.SubHeaders)
+                    {
+                        if (subheader.HeaderId == header.Id)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => subheader.Name)
+                                </td>
+                                <td>
+                                    <a class="text-decoration-none" asp-action="EditSHeader" asp-controller="SubHeader" asp-route-Id="@subheader.Id">Редактировать</a>|
+                                    @if (User.IsInRole("admin"))
+                                    {
+                                        <a class="text-decoration-none" asp-action="DeleteSHeader" asp-controller="SubHeader" asp-route-Id="@subheader.Id">Удалить</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                    }
+                </table>
+            </td>
+            <td>
+                <a class="text-decoration-none" asp-action="EditHeader" asp-controller="Header" asp-route-Id="@header.Id">Редактировать</a>|
+                @if (User.IsInRole("admin"))
+                {
+                    <a class="text-decoration-none" asp-action="DeleteHeader" asp-controller="Header" asp-route-Id="@header.Id">Удалить</a>
+                }
+            </td>
+        </tr>
+    }
+</table>
+
+<br />
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Sidebar</th>
+            <th>
+                @if (User.IsInRole("admin"))
+                {
+                    <a class="text-decoration-none" asp-action="CreateSidebar" asp-controller="Sidebar" asp-route-FacultyId="@ViewBag.FacultyId">Create New Sidebar</a>
+                }
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    
+
+    @foreach (var sidebar in Model.Sidebars)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => sidebar.Name)
+            </td>
+            <td>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Subsidebar</th>
+
+                        <th>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <a class="text-decoration-none" asp-action="CreateSSidebar" asp-controller="SubSidebar" asp-route-SidebarId="@sidebar.Id">Create New SubSidebar</a>
+                            }
+                        </th>
+
+                    </tr>
+
+                    @foreach (var subsidebar in Model.SubSidebars)
+                    {
+                        if (subsidebar.SidebarId == sidebar.Id)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => subsidebar.Name)
+                                </td>
+                                <td>
+                                    <a class="text-decoration-none" asp-action="EditSSidebar" asp-controller="SubSidebar" asp-route-Id="@subsidebar.Id">Редактировать</a>|
+                                    @if (User.IsInRole("admin"))
+                                    {
+                                        <a class="text-decoration-none" asp-action="DeleteSSidebar" asp-controller="SubSidebar" asp-route-Id="@subsidebar.Id">Удалить</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                    }
+                </table>
+            </td>
+            <td>
+                <a class="text-decoration-none" asp-action="EditSidebar" asp-controller="Sidebar" asp-route-Id="@sidebar.Id">Редактировать</a>|
+                @if (User.IsInRole("admin"))
+                {
+                    <a class="text-decoration-none" asp-action="DeleteSidebar" asp-controller="Sidebar" asp-route-Id="@sidebar.Id">Удалить</a>
+                }
+            </td>
+        </tr>
+    }
+</table>

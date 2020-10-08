@@ -1,0 +1,29 @@
+﻿@using FacultyWeb.Models
+@model IEnumerable<FacultyWeb.Models.Faculty>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+
+<div class="container">
+    <table class="table table-striped">
+        <thead class="thead-light">
+            <tr>
+                <th>Факультеты</th>
+            </tr>
+        </thead>
+        <tbody class="table-striped">
+            @foreach (var faculty in Model)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="Content" asp-controller="Home" asp-route-fId="@faculty.Id">@faculty.Name</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
